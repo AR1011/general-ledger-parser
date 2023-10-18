@@ -1,0 +1,34 @@
+{
+	"info": {
+		"_postman_id": "553694c3-89fd-4cbb-ac47-09f0f402de76",
+		"name": "Levenue",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18093849"
+	},
+	"item": [
+		{
+			"name": "post csv",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "date,accountName,account_type,debit,credit,bal,amt,dsc\n2023-10-10,Office Supplies,Expense,100,,500,100,Bought pens and paper\n2023-10-11,Utilities,Expense,50,,450,50,Monthly electricity bill\n2023-10-12,Rent,Expense,1000,,550,-450,Monthly office rent\n2023-10-13,Client A,Revenue,,150,700,-150,Consultation fee received\n2023-10-14,Salaries,Expense,2000,,1700,-1000,Monthly staff salaries\n2023-10-15,Internet,Expense,50,,1650,50,Internet charges for the month\n2023-10-16,Client B,Revenue,,500,2150,-500,Web design services\n2023-10-17,Office Furniture,Asset,500,,1650,500,Purchased new office chairs\n2023-10-18,Stationery,Expense,20,,1630,20,Printer paper and cartridges\n2023-10-19,Client C,Revenue,,300,1930,-300,SEO services provided\n\n"
+				},
+				"url": {
+					"raw": "http://localhost:3069/api/parse",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3069",
+					"path": [
+						"api",
+						"parse"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

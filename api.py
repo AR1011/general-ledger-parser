@@ -6,7 +6,7 @@ import uvicorn
 
 
 class API:
-    def __init__(self, host: str = "0.0.0.0", port: int = 20500):
+    def __init__(self, host: str = "127.0.0.1", port: int = 3069):
         self.app = FastAPI()
         self.host = host
         self.port = port

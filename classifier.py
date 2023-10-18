@@ -27,9 +27,9 @@ class classifier:
 
         debit = ["debit", "Debit", "DEBIT"]
 
-        amount = ["amount", "Amount", "AMOUNT"]
+        amount = ["amount", "Amount", "AMOUNT", "amt", "Amt", "AMT"]
 
-        description = ["description", "Description", "DESCRIPTION"]
+        description = ["description", "Description", "DESCRIPTION", "dsc", "desc"]
 
         balance = ["balance", "Balance", "BALANCE"]
 
@@ -67,8 +67,6 @@ class classifier:
             inputs = column_names.copy()
             map = {col_name: orig for col_name, orig in zip(column_names, inputs)}
 
-            column_names = [col_name.lower()for col_name in column_names]
-
             results = {"success": True, "predictions": []}
 
             if len(column_names) > 0:
@@ -90,4 +88,6 @@ class classifier:
             return classes.Prediction(results["predictions"]), None
 
         except Exception as e:
+            print(e)
+            print(f"Error predicting: {e}")
             return None, str(e)

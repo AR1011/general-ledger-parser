@@ -45,6 +45,7 @@ def parseCSV(job: classes.AttrDict, csv: str) -> (pd.DataFrame, str):
             return None, err
 
         df = pd.read_csv(f"./data/raw/job-{job.id}.csv")
+        df.fillna("", inplace=True)
 
         headers = df.columns.values.tolist()
 
