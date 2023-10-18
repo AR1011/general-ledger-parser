@@ -3,7 +3,7 @@ import uuid
 import os
 import time
 import classifier
-
+import classes
 clf = classifier.classifier()
 
 
@@ -28,23 +28,6 @@ def createDirs() -> None:
         return str(e)
 
 
-class AttrDict(dict):
-    def __init__(self, *args, **kwargs):
-        super(AttrDict, self).__init__(*args, **kwargs)
-
-    def __getattr__(self, name):
-        try:
-            return self[name]
-        except KeyError:
-            raise AttributeError(f"Attribute {name} not found")
-
-    def __setattr__(self, name, value):
-        self[name] = value
-
-    def __str__(self) -> str:
-        return super().__str__()
-
-
 def genUUID() -> str:
     return uuid.uuid4().hex
 
@@ -55,7 +38,7 @@ def formatTime(response_time: float):
     return response_time_formatted
 
 
-def parseCSV(job: AttrDict, csv: str) -> (pd.DataFrame, str):
+def parseCSV(job: classes.AttrDict, csv: str) -> (pd.DataFrame, str):
     try:
         err = saveCSV(job, csv)
         if (err != None):
@@ -64,10 +47,16 @@ def parseCSV(job: AttrDict, csv: str) -> (pd.DataFrame, str):
         df = pd.read_csv(f"./data/raw/job-{job.id}.csv")
 
         headers = df.columns.values.tolist()
-        print(headers)
 
-        pred = clf.predict(headers)
-        print(pred)
+        pred, err = clf.predict(headers)
+        if (err != None):
+            return None, err
+
+        mappings, err = createMappings(df, pred)
+        if (err != None):
+            return None, err
+
+        df = df.rename(columns=mappings)
 
         return (df, pred), None
 
@@ -76,7 +65,7 @@ def parseCSV(job: AttrDict, csv: str) -> (pd.DataFrame, str):
         return None, str(e)
 
 
-def saveCSV(job: AttrDict, df: pd.DataFrame) -> str:
+def saveCSV(job: classes.AttrDict, df: pd.DataFrame) -> str:
     try:
 
         if isinstance(df, pd.DataFrame):
@@ -101,4 +90,17 @@ def dfToJson(df: pd.DataFrame) -> (list, str):
 
     except Exception as e:
         print(f"Error converting dataframe to json: {e}")
+        return None, str(e)
+
+
+def createMappings(df: pd.DataFrame, prediction: classes.Prediction) -> (dict, str):
+    print(type(prediction.predictions))
+    try:
+        mappings = {}
+        for pred in prediction.predictions:
+            mappings[pred.col_name] = pred.prediction
+        return mappings, None
+
+    except Exception as e:
+        print(f"Error creating mappings: {e}")
         return None, str(e)

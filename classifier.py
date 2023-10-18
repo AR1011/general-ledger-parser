@@ -6,6 +6,7 @@ import pandas as pd
 import numpy as np
 from typing import List, Tuple, Dict
 import time
+import classes
 
 
 class classifier:
@@ -76,14 +77,17 @@ class classifier:
 
                 for i, col_name in enumerate(column_names):
                     realName = map[col_name]
-                    result = {"functionName": realName, "prediction": predictions[i], "confidence": round(np.max(probabilities[i]) * 100, 3), "probabilities": {}}
+                    result = classes.AttrDict(
+                        {"col_name": realName, "prediction": predictions[i],
+                         "confidence": round(np.max(probabilities[i]) * 100, 3),
+                         "probabilities": classes.AttrDict({})})
 
                     for j, label in enumerate(self.model.classes_):
                         result["probabilities"][label] = round(probabilities[i][j] * 100, 3)
 
                     results["predictions"].append(result)
 
-            return results, None
+            return classes.Prediction(results["predictions"]), None
 
         except Exception as e:
             return None, str(e)

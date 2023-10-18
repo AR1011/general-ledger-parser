@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Request
 import time
 import util
+import classes
 import uvicorn
 
 
@@ -22,7 +23,7 @@ class API:
             csv_bytes = await request.body()
             csv = csv_bytes.decode("utf-8")
 
-            job = util.AttrDict({"id": util.genUUID()})
+            job = classes.AttrDict({"id": util.genUUID()})
             job.time = time.time()
 
             if (len(csv) > 2**20):  # 1MB
@@ -43,7 +44,7 @@ class API:
             if err:
                 data = ""
 
-            return {"message": "success", "job": job, "data": data, "predictions": predictions}
+            return {"message": "success", "job": job, "reformatted_data": data, "predictions": predictions}
 
     def configure_middleware(self):
         @self.app.middleware("http")
