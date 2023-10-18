@@ -14,6 +14,12 @@ python3 api.py
 
 It will host an api on `127.0.0.1:3069`
 
+#### Endpoints:
+
+/foo - `http://127.0.0.1:3069/foo`
+
+/api/parse - `http://127.0.0.1:3069/api/parse`
+
 You can use the `postman.json` file to load the postman config.
 
 example data:
